@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "rag-agent-for-gala-hf"
+version = "0.1.0"
+description = ""
+authors = ["santiagoahl <sahumadal@unal.edu.co>"]
+readme = "README.md"
+packages = [{include = "rag_agent_for_gala_hf"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
