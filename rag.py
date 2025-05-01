@@ -2,6 +2,8 @@
 # from langchain_community.llms import HuggingFaceHub  # Use LLM models stored in HF, deprecated
 from langchain_core.runnables import Runnable
 from langchain_huggingface.llms.huggingface_endpoint import HuggingFaceEndpoint
+from langchain.tools import tool
+
 from langchain.prompts import (
     SystemMessagePromptTemplate,
     ChatPromptTemplate,
@@ -47,7 +49,7 @@ var = "HUGGINGFACEHUB_API_TOKEN"
 _get_var(var)
 hf_token = os.getenv(var)
 
-
+@tool
 class RAGTool(Runnable):
     name = "rag_tool"
     description = "Retrieves detailed information about gala guests based on their name or relation."
@@ -161,7 +163,7 @@ class RAGTool(Runnable):
             + "=" * 20
             + f"\nRetrieved Docs:\n\n{retrieved_docs}"
         )
-
+        
         return retrieved_docs
 
 
