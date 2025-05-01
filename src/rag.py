@@ -26,7 +26,7 @@ import os, getpass  # Get HF API token
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler("rag.log")
+handler = logging.FileHandler("../logs/rag.log")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 

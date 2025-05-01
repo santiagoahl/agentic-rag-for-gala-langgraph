@@ -1,5 +1,3 @@
-from rag import RAGTool
-from tools import search_tool, weather_tool
 
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import BaseMessage, AIMessage, HumanMessage
@@ -7,7 +5,11 @@ from langgraph.graph import START, END, StateGraph
 from langgraph.prebuilt import ToolNode
 
 from typing import List, TypedDict, Literal
-import os, getpass
+import os, getpass, sys
+sys.path.append(os.path.abspath("src"))
+
+from rag import RAGTool
+from tools import search_tool, weather_tool
 
 
 # TODO: Migrate _get_var to utils script
