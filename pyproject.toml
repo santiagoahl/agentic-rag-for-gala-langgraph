@@ -20,6 +20,7 @@ rank-bm25 = "^0.2.2"
 black = "^25.1.0"
 bs4 = "^0.0.2"
 langfuse = "^2.60.3"
+langchain-core = "^0.3.56"
 
 
 [build-system]

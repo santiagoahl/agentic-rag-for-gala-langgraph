@@ -10,7 +10,7 @@ import getpass
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler("../logs/tools.log")
+handler = logging.FileHandler("logs/tools.log")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 
@@ -158,18 +158,18 @@ def weather_tool(
 
 
 def run() -> None:
-    #t = int(input("Que tarea? 0=web search, 1=weather query: "))
-    #
-    #if t == 0:
-    #    query = input("que quieres buscar?: ")
-    #    result = search_tool.invoke(query)
-    #elif t == 1:
-    #    query = input("ingresa la ciudad a consultar: ")
-    #    result = weather_tool.invoke(query)
-    #    
-    #print(result)
-    #return result
-    pass
+    t = int(input("Que tarea? 0=web search, 1=weather query: "))
+    
+    if t == 0:
+        query = input("que quieres buscar?: ")
+        result = search_tool.invoke(query)
+    elif t == 1:
+        query = input("ingresa la ciudad a consultar: ")
+        result = weather_tool.invoke(query)
+        
+    print(result)
+    return result
+    #pass
 
 if __name__ == "__main__":
     run()

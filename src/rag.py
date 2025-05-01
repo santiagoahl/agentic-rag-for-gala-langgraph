@@ -26,7 +26,7 @@ import os, getpass  # Get HF API token
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler("../logs/rag.log")
+handler = logging.FileHandler("logs/rag.log")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 
@@ -49,7 +49,6 @@ var = "HUGGINGFACEHUB_API_TOKEN"
 _get_var(var)
 hf_token = os.getenv(var)
 
-@tool
 class RAGTool(Runnable):
     name = "rag_tool"
     description = "Retrieves detailed information about gala guests based on their name or relation."
