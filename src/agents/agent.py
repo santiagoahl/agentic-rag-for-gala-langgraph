@@ -10,11 +10,11 @@ sys.path.append(os.path.abspath("src"))
 
 from rag import RAGTool
 from tools import search_tool, weather_tool
+from IPython.display import display, Image
 
+MAX_ITERATIONS = 3
 
 # TODO: Migrate _get_var to utils script
-
-
 def _get_var(var) -> None:
     if os.getenv(var):
         print(f"{var} successfully processed")
@@ -30,6 +30,7 @@ _get_var("OPENAI_API_KEY")
 class GalaState(TypedDict):
     messages: List[BaseMessage]
     intermediate_steps: list
+    iterations: int
     done: bool
 
 
@@ -56,6 +57,7 @@ def agent(state: GalaState) -> GalaState:
         Batman is a cool superhero
     """
     chat_history = state.get("messages", [])
+    current_iterations = state.get("iterations", 0)
 
     formatted_messages = [
         {"role": "user" if msg.type == "human" else "assistant", "content": msg.content}
@@ -68,12 +70,13 @@ def agent(state: GalaState) -> GalaState:
     # Handle tool calls if they exist
     if hasattr(response, "tool_calls") and response.tool_calls:
         # This will trigger the tool execution in LangGraph
-        return {"messages": chat_history + [response]}
+        return {"messages": chat_history + [response], "iterations": current_iterations + 1}
 
     # For regular responses
     return {
         "messages": chat_history + [response],
         **{k: v for k, v in state.items() if k != "messages"},  # Preserve other state
+        "iterations": current_iterations + 1
     }
 
 
@@ -81,8 +84,12 @@ def should_use_tool(state: GalaState) -> Literal["tools", "end"]:
     """ "
     Determine whether to use tools based on the agent's last response
     """
-
     last_message = state.get("messages", [])[-1]
+    current_agent_iterations = state.get("iterations", 0)
+    
+    # Finish flow is max number of iterations is reached
+    if current_agent_iterations >= MAX_ITERATIONS:
+        return "end"
 
     if hasattr(last_message, "tool_calls") and last_message.tool_calls:
         next_node = "tools"
@@ -111,13 +118,18 @@ builder.add_edge(
 agent_graph = builder.compile()
 
 
+graph_image_bytes = agent_graph.get_graph().draw_mermaid_png()
+with open("images/agent_architecture.png", "wb") as f:
+    f.write(graph_image_bytes)
+
+
 def test_app() -> None:
     prompt_1 = (
         "Hi. Tell me please Who is Ada and Which will be the story to tell about she?"
     )
     prompt_2 = "Hi. Tell me please Which was the result of the match Barcelona vs Inter today for the 24/25 Champions League Semifinal"
     prompt_3 = "Hi. Tell me please how's the weather today at Barcelona"
-    response_1 = agent_graph.invoke({"messages": [HumanMessage(content=prompt_1)]})
+    response_1 = agent_graph.invoke({"messages": [HumanMessage(content=prompt_1)]}, {"recursion_limit": 10})
     print(response_1)
 
 

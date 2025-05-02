@@ -49,6 +49,7 @@ var = "HUGGINGFACEHUB_API_TOKEN"
 _get_var(var)
 hf_token = os.getenv(var)
 
+
 class RAGTool(Runnable):
     name = "rag_tool"
     description = "Retrieves detailed information about gala guests based on their name or relation."
@@ -162,7 +163,7 @@ class RAGTool(Runnable):
             + "=" * 20
             + f"\nRetrieved Docs:\n\n{retrieved_docs}"
         )
-        
+
         return retrieved_docs
 
 

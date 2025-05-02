@@ -18,7 +18,8 @@ logger.addHandler(handler)
 
 for handler in logger.handlers:
     handler.flush()
-    
+
+
 # TODO: Migrate _get_var to utils script
 def _get_var(var) -> str:  # Cambiar el tipo de retorno a str
     if os.getenv(var):
@@ -27,6 +28,7 @@ def _get_var(var) -> str:  # Cambiar el tipo de retorno a str
     else:
         os.environ[var] = getpass.getpass(prompt=f"Type the value of {var}: ")
         return os.environ[var]  # Retornar el valor
+
 
 # TODO: integrate with agent
 @tool
@@ -62,7 +64,7 @@ def search_tool(query) -> str:  # Q: how to pass GuestState as type?
     http_response = requests.get(**http_query)
     soup = BeautifulSoup(markup=http_response.text, features="html.parser")
     results_raw = soup.find_all(name="a", class_="result__a", limit=3)
-    
+
     logging.info(f"[{module_name}] Web search completed.")
     if not results_raw:
         return "No results found."
@@ -73,7 +75,7 @@ def search_tool(query) -> str:  # Q: how to pass GuestState as type?
     return result
 
 
-#@lru_cache(maxsize=32)
+# @lru_cache(maxsize=32)
 @tool
 def weather_tool(
     location: str, unit: Optional[str] = "celsius", forecast_days: Optional[int] = 0
@@ -102,9 +104,9 @@ def weather_tool(
     """
     module_name = "Weather Info Tool"
     logging.info(f"[{module_name}] Validating Weather API Credentials...")
-        
+
     api_key = _get_var("WEATHER_API_KEY")
-    
+
     if api_key:
         logging.info(f"[{module_name}] Weather API Credential succesfully processed.")
     else:
@@ -159,17 +161,18 @@ def weather_tool(
 
 def run() -> None:
     t = int(input("Que tarea? 0=web search, 1=weather query: "))
-    
+
     if t == 0:
         query = input("que quieres buscar?: ")
         result = search_tool.invoke(query)
     elif t == 1:
         query = input("ingresa la ciudad a consultar: ")
         result = weather_tool.invoke(query)
-        
+
     print(result)
     return result
-    #pass
+    # pass
+
 
 if __name__ == "__main__":
     run()
