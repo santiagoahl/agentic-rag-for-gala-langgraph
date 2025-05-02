@@ -21,7 +21,8 @@ from datasets import load_dataset  # Load Guests Dataset
 import logging
 
 from typing import Optional, Union, Any, List  # Typed programming
-import os, getpass  # Get HF API token
+import os
+from utils import get_var
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -36,17 +37,10 @@ for handler in logger.handlers:
     handler.flush()
 
 
-# TODO: Migrate _get_var to utils script
 # Get HF API token for model reference
-def _get_var(var) -> None:
-    if os.getenv(var):
-        logger.info(f"{var} successfully processed")
-    else:
-        os.environ[var] = getpass.getpass(prompt=f"Type the value of {var}: ")
 
-
-var = "HUGGINGFACEHUB_API_TOKEN"
-_get_var(var)
+var = "HUGGINGFACEHUB_API_TOKEN"  # TODO: Optional. Migrate token names to Location script
+get_var(var)
 hf_token = os.getenv(var)
 
 

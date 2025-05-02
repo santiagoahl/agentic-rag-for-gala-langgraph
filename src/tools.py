@@ -5,7 +5,7 @@ import requests
 from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 import logging
-import getpass
+from utils import get_var
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -18,16 +18,6 @@ logger.addHandler(handler)
 
 for handler in logger.handlers:
     handler.flush()
-
-
-# TODO: Migrate _get_var to utils script
-def _get_var(var) -> str:  # Cambiar el tipo de retorno a str
-    if os.getenv(var):
-        logger.info(f"{var} successfully processed")
-        return os.getenv(var)  # Añadir return
-    else:
-        os.environ[var] = getpass.getpass(prompt=f"Type the value of {var}: ")
-        return os.environ[var]  # Retornar el valor
 
 
 # TODO: integrate with agent
@@ -105,7 +95,7 @@ def weather_tool(
     module_name = "Weather Info Tool"
     logging.info(f"[{module_name}] Validating Weather API Credentials...")
 
-    api_key = _get_var("WEATHER_API_KEY")
+    api_key = get_var("WEATHER_API_KEY")
 
     if api_key:
         logging.info(f"[{module_name}] Weather API Credential succesfully processed.")

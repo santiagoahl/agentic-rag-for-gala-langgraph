@@ -6,23 +6,16 @@ from langgraph.prebuilt import ToolNode
 
 from typing import List, TypedDict, Literal
 import os, getpass, sys
+from IPython.display import display, Image
 sys.path.append(os.path.abspath("src"))
 
 from rag import RAGTool
 from tools import search_tool, weather_tool
-from IPython.display import display, Image
+from utils import get_var
 
 MAX_ITERATIONS = 3
 
-# TODO: Migrate _get_var to utils script
-def _get_var(var) -> None:
-    if os.getenv(var):
-        print(f"{var} successfully processed")
-    else:
-        os.environ[var] = getpass.getpass(prompt=f"Type the value of {var}: ")
-
-
-_get_var("OPENAI_API_KEY")
+get_var("OPENAI_API_KEY")
 
 # 1/4 State
 
@@ -117,20 +110,20 @@ builder.add_edge(
 
 agent_graph = builder.compile()
 
-
 graph_image_bytes = agent_graph.get_graph().draw_mermaid_png()
 with open("images/agent_architecture.png", "wb") as f:
     f.write(graph_image_bytes)
 
 
 def test_app() -> None:
-    prompt_1 = (
-        "Hi. Tell me please Who is Ada and Which will be the story to tell about she?"
-    )
-    prompt_2 = "Hi. Tell me please Which was the result of the match Barcelona vs Inter today for the 24/25 Champions League Semifinal"
-    prompt_3 = "Hi. Tell me please how's the weather today at Barcelona"
-    response_1 = agent_graph.invoke({"messages": [HumanMessage(content=prompt_1)]}, {"recursion_limit": 10})
-    print(response_1)
+    print("hi")
+    #prompt_1 = (
+    #    "Hi. Tell me please Who is Ada and Which will be the story to tell about she?"
+    #)
+    #prompt_2 = "Hi. Tell me please Which was the result of the match Barcelona vs Inter today for the 24/25 Champions League Semifinal"
+    #prompt_3 = "Hi. Tell me please how's the weather today at Barcelona"
+    #response_1 = agent_graph.invoke({"messages": [HumanMessage(content=prompt_1)]}, {"recursion_limit": 10})
+    #print(response_1)
 
 
 if __name__ == "__main__":
