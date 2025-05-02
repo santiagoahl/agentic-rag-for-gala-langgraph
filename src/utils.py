@@ -1,5 +1,8 @@
 import os, getpass
+
 # TODO: Docstrings
+# TODO: Include exception handling with link references
+
 
 def get_var(var) -> None:
     if os.getenv(var):
@@ -11,5 +14,6 @@ def get_var(var) -> None:
 def run() -> None:
     print("Hello World")
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     run()

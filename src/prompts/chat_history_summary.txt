@@ -1,0 +1,11 @@
+# Human-Agent Conversation
+
+## Prompt
+{prompt}
+
+## Agent Response
+{agent_response}
+
+## Tools Used
+- RAGTool: Retrieved information about Ada Lovelace
+- Langfuse: Conversation tracing enabled

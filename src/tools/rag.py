@@ -2,7 +2,7 @@
 # from langchain_community.llms import HuggingFaceHub  # Use LLM models stored in HF, deprecated
 from langchain_core.runnables import Runnable
 from langchain_huggingface.llms.huggingface_endpoint import HuggingFaceEndpoint
-from langchain.tools import tool
+from langchain.tools import StructuredTool
 
 from langchain.prompts import (
     SystemMessagePromptTemplate,
@@ -38,10 +38,11 @@ for handler in logger.handlers:
 
 
 # Get HF API token for model reference
-
-var = "HUGGINGFACEHUB_API_TOKEN"  # TODO: Optional. Migrate token names to Location script
+var = (
+    "HUGGINGFACEHUB_API_TOKEN"  # TODO: Optional. Migrate token names to Location script
+)
 get_var(var)
-hf_token = os.getenv(var)
+# hf_token = os.getenv(var)
 
 
 class RAGTool(Runnable):
@@ -74,10 +75,10 @@ class RAGTool(Runnable):
         #    temperature=0.1,
         #    max_new_tokens=100
         # )
-        self.llm = InferenceClient(
-            model="mistralai/Mistral-7B-Instruct-v0.1",  # "Qwen/Qwen2.5-Coder-32B-Instruct",
-            token=hf_token,
-        )
+        # self.llm = InferenceClient(
+        #    model="mistralai/Mistral-7B-Instruct-v0.1",  # "Qwen/Qwen2.5-Coder-32B-Instruct",
+        #    token=hf_token,
+        # )
 
     def _translate_query(self) -> None:
         # Step-Back
@@ -150,13 +151,13 @@ class RAGTool(Runnable):
         logger.info("Retrieving Docs...")
         retrieved_docs = self._retrieval()
         logger.info("Retrieval successfully completed!")
-        print(
-            "\n\nSummary\n"
-            + "=" * 20
-            + f"\nUser query: {self.query}\n"
-            + "=" * 20
-            + f"\nRetrieved Docs:\n\n{retrieved_docs}"
-        )
+        # print(
+        #    "\n\nSummary\n"
+        #    + "=" * 20
+        #    + f"\nUser query: {self.query}\n"
+        #    + "=" * 20
+        #    + f"\nRetrieved Docs:\n\n{retrieved_docs}"
+        # )
 
         return retrieved_docs
 

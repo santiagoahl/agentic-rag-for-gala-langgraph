@@ -1,4 +1,47 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.env/
+venv/
 .venv/
-/logs
+env/
+ENV/
+
+# Poetry / Pip
+poetry.lock
+*.lock
+pip-log.txt
+Pipfile*
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# Jupyter Notebook checkpoints
 .ipynb_checkpoints/
+notebooks/*.ipynb_checkpoints*
+
+# Log files
+logs/*.log
+*.log
+
+# Environment variables
+.env
+*.env
+
+# env
+dist/
+build/
+*.egg-info/
+*.egg
+*.manifest
+*.spec
+
+
+docs/_build/

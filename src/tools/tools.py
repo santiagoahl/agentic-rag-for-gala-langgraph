@@ -6,6 +6,7 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 import logging
 from utils import get_var
+from rag import RAGTool
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -20,16 +21,45 @@ for handler in logger.handlers:
     handler.flush()
 
 
-# TODO: integrate with agent
 @tool
-def search_tool(query) -> str:  # Q: how to pass GuestState as type?
+def rag_tool(query: str) -> str:
+    """
+    Retrieves detailed guest information from the gala database using RAG.
+    Searches by guest name or relation to the event host.
+
+    Parameters
+    ----------
+    query : str
+        The name of the guest (e.g., "Ada Lovelace") or their relation
+        (e.g., "Keynote speaker"). Case-insensitive.
+
+    Returns:
+        str:
+        A formatted string containing guest details including:
+        - Name
+        - Relation to the event
+        - Professional description
+        - Contact email
+        Returns "No information found about this Guest" if no match is found.
+
+    Example:
+        >>> rag_tool("Ada Lovelace")
+        'Name: Ada Lovelace\nRelation: Honored Guest\nDescription: Pioneering mathematician...\nEmail: ada@example.com'
+    """
+    retriever = RAGTool()
+    retrieved_docs = retriever.invoke(query)
+    return retrieved_docs
+
+
+@tool
+def search_tool(query: str) -> str:  # Q: how to pass GuestState as type?
     """
     This tools searchs in the web to retrieve information related to the user query.
 
     Parameters
     ----------
-    state : GalaState
-        Langgraph State subclass. Saves the relevant information regarding user query and LLM reasoning
+    query : str
+        Web search query
 
     Returns:
         str: Web search result
